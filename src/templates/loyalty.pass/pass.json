@@ -1,0 +1,28 @@
+{
+    "formatVersion": 1,
+    "passTypeIdentifier": "pass.io.zed.example.loyalty",
+    "teamIdentifier": "5L5264ZN28",
+    "organizationName": "District Cafe",
+    "description": "District Cafe Loyalty Card",
+    "serialNumber": "<serial-number>",
+    "logoText": "Brew Points",
+    "foregroundColor": "rgb(255, 255, 255)",
+    "backgroundColor": "rgb(111, 78, 55)",
+    "labelColor": "rgb(255, 255, 255)",
+    "storeCard": {
+      "primaryFields": [],
+      "backFields": [
+        {
+          "key": "rewards",
+          "label": "Rewards Info",
+          "value": "Earn 1 point per $1. Get a free drink at 150 points."
+        }
+      ]
+    },
+    "barcode": {
+      "format": "PKBarcodeFormatQR",
+      "message": "<serial-number>",
+      "messageEncoding": "iso-8859-1"
+    }
+  }
+  
