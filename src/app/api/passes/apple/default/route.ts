@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PKPass } from 'passkit-generator';
 import path from 'path';
-import fs from 'fs';
-import { PASS_KEYPHRASE } from '@/config/secret';
+import { PASS_KEYPHRASE, PEM_CERTIFICATE_BASE64, PEM_KEY_BASE64, PEM_WWRD_BASE64 } from '@/config/secret';
 import { generateSerial } from '@/utils/random';
+import { decodeBase64ToBuffer } from '@/utils/encoding';
 
 export async function GET(request: NextRequest) {
   try {
@@ -15,14 +15,11 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Name and email are required' }, { status: 400 });
     }
 
-    const certificatePath = path.join(process.cwd(), 'src','certs', 'certificate.pem');
-    const keyPath = path.join(process.cwd(), 'src','certs', 'key.pem');
-    const wwdrPath = path.join(process.cwd(), 'src','certs', 'wwdr.pem');
-    const templatePath = path.join(process.cwd(), 'src', 'templates', 'loyalty.pass');
+    const certificate = decodeBase64ToBuffer(PEM_CERTIFICATE_BASE64!);
+    const key = decodeBase64ToBuffer(PEM_KEY_BASE64!);
+    const wwdr = decodeBase64ToBuffer(PEM_WWRD_BASE64!);
 
-    const cert = fs.readFileSync(certificatePath);
-    const key = fs.readFileSync(keyPath);
-    const wwdr = fs.readFileSync(wwdrPath);
+    const templatePath = path.join(process.cwd(), 'src', 'templates', 'loyalty.pass');
 
     const serial = generateSerial();
     
@@ -31,7 +28,7 @@ export async function GET(request: NextRequest) {
       model: templatePath,
       certificates: {
         wwdr,
-        signerCert: cert,
+        signerCert: certificate,
         signerKey: key,
         signerKeyPassphrase: PASS_KEYPHRASE,
       },
